@@ -39,11 +39,11 @@ AWS_ACCESS_KEY_ID       = os.environ["AWS_ACCESS_KEY_ID"]
 AWS_SECRET_ACCESS_KEY   = os.environ["AWS_SECRET_ACCESS_KEY"]
 AWS_DEFAULT_REGION      = os.environ["AWS_DEFAULT_REGION"]
 
-CHUNK 					= 1024
-FORMAT 					= pyaudio.paInt16
-CHANNELS 				= 1
-RATE 					= 16000
-RECORD_SECONDS 			= 3
+CHUNK 			= 1024
+FORMAT 			= pyaudio.paInt16
+CHANNELS 		= 1
+RATE 			= 16000
+RECORD_SECONDS 		= 3
 WAVE_OUTPUT_FILENAME 	= "voice.wav"
 
 # Endpoints
@@ -129,16 +129,16 @@ def play_sound(waveFile):
 def callLex(path, user):
 	recording = open(path, 'rb')
 	client = boto3.client('lex-runtime',
-				aws_access_key_id		= AWS_ACCESS_KEY_ID,
+				aws_access_key_id	= AWS_ACCESS_KEY_ID,
 				aws_secret_access_key	= AWS_SECRET_ACCESS_KEY,
-				region_name				= AWS_DEFAULT_REGION)
+				region_name		= AWS_DEFAULT_REGION)
 
 	r = client.post_content(	botName		='voiceui',
-								botAlias	='$LATEST',
-								userId		=user,
-								contentType	='audio/l16; rate=16000; channels=1',
-								accept		="audio/mpeg",
-								inputStream	=recording
+					botAlias	='$LATEST',
+					userId		=user,
+					contentType	='audio/l16; rate=16000; channels=1',
+					accept		="audio/mpeg",
+					inputStream	=recording
 							)
 	print(r)
 
@@ -298,15 +298,14 @@ def personCheck():
 
 def speak(text):
 	polly_client = boto3.Session(
-				aws_access_key_id		= AWS_ACCESS_KEY_ID,
+				aws_access_key_id	= AWS_ACCESS_KEY_ID,
 				aws_secret_access_key	= AWS_SECRET_ACCESS_KEY,
-				region_name				= AWS_DEFAULT_REGION).client('polly')
-    			# region_name='us-west-2').client('polly')
+				region_name		= AWS_DEFAULT_REGION).client('polly')
 
 	response = polly_client.synthesize_speech(
-				VoiceId='Joanna',
-                OutputFormat='mp3',
-                Text = text)
+				VoiceId		= 'Joanna',
+                		OutputFormat	= 'mp3',
+                		Text 		= text)
 
 	file = open('pollyOutput.mp3', 'wb')
 	file.write(response['AudioStream'].read())
